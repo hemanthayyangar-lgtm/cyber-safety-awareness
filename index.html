@@ -553,6 +553,23 @@ svg.icon-sm{width:16px;height:16px;stroke:currentColor;stroke-width:2;fill:none;
 svg.icon-lg{width:24px;height:24px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
 svg.icon-xl{width:32px;height:32px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
 svg.icon-48{width:48px;height:48px;stroke:currentColor;stroke-width:1.4;fill:none;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #certificate,
+  #certificate * {
+    visibility: visible;
+  }
+
+  #certificate {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
 </style>
 </head>
 <body>
@@ -802,8 +819,34 @@ svg.icon-48{width:48px;height:48px;stroke:currentColor;stroke-width:1.4;fill:non
         <h3 class="font-display" id="resultScore"></h3>
         <p id="resultMsg"></p>
         <button class="quiz-restart" onclick="restartQuiz()">Try Again</button>
-      </div>
+        <div id="certificate" style="display:none; text-align:center; margin-top:30px;">
+    <div style="
+        max-width:700px;
+        margin:auto;
+        padding:30px;
+        border:3px solid #2563eb;
+        border-radius:15px;
+        background:white;
+    ">
+        <h1>🏆 Certificate of Completion</h1>
+
+        <p>This certifies that</p>
+
+        <h2>Cyber Safety Learner</h2>
+
+        <p>has successfully completed the</p>
+
+        <h3>Cyber Safety Awareness Program</h3>
+
+        <p>and demonstrated knowledge of safe online practices.</p>
+
+        <p id="certificateDate"></p>
+
+        <button onclick="window.print()">
+            Download Certificate
+        </button>
     </div>
+</div>
   </div>
 </section>
 
@@ -1377,14 +1420,25 @@ function showResult(){
   document.getElementById('resultScore').textContent=`${quizState.score}/${questions.length} — ${pct}%`;
   const msgs=['Keep learning! Review the tips section above.','Good effort! A few more reads and you\'ll ace it.','Solid knowledge! You\'re well on your way.','Great job! You really know your cyber safety.','Perfect score! You\'re a CyberSafe champion!'];
   document.getElementById('resultMsg').textContent=msgs[Math.min(quizState.score,4)];
+   if(pct >= 60){
+      document.getElementById('certificate').style.display='block';
+
+      document.getElementById('certificateDate').textContent =
+      'Date: ' + new Date().toLocaleDateString();
+}else{
+      document.getElementById('certificate').style.display='none';
+}
 }
 
 function restartQuiz(){
   quizState={current:0,score:0,answered:false};
   document.getElementById('quizContent').style.display='block';
   document.getElementById('quizResult').style.display='none';
+  document.getElementById('certificate').style.display='none';
   renderQuiz();
 }
+
+
 let count = 12450;
 
 setTimeout(()=>{
